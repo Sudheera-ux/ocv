@@ -1,0 +1,1038 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Osanda Vinod — Cybersecurity Undergraduate</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link
+    href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700;800&family=Inter:wght@400;500;600;700&display=swap"
+    rel="stylesheet">
+  <style>
+    :root {
+      --bg: #0a0e13;
+      --bg-raised: #0f1620;
+      --line: #1d2733;
+      --text: #e7edf3;
+      --text-dim: #8694a3;
+      --text-faint: #51606e;
+      --accent: #39ff9d;
+      --accent-dim: #1f8a59;
+      --alert: #ffb454;
+      --danger: #ff5d5d;
+      --mono: 'JetBrains Mono', monospace;
+      --sans: 'Inter', sans-serif;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: var(--sans);
+      line-height: 1.6;
+      overflow-x: hidden;
+    }
+
+    body::before {
+      content: "";
+      position: fixed;
+      inset: 0;
+      background-image:
+        linear-gradient(var(--line) 1px, transparent 1px),
+        linear-gradient(90deg, var(--line) 1px, transparent 1px);
+      background-size: 48px 48px;
+      opacity: 0.18;
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    a {
+      color: inherit;
+      text-decoration: none;
+    }
+
+    .wrap {
+      max-width: 980px;
+      margin: 0 auto;
+      padding: 0 28px;
+      position: relative;
+      z-index: 1;
+    }
+
+    ::selection {
+      background: var(--accent);
+      color: #06120c;
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      * {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+        scroll-behavior: auto !important;
+      }
+    }
+
+    /* ---- nav ---- */
+    header.nav {
+      position: sticky;
+      top: 0;
+      z-index: 50;
+      background: rgba(10, 14, 19, 0.85);
+      backdrop-filter: blur(10px);
+      border-bottom: 1px solid var(--line);
+    }
+
+    .nav-inner {
+      max-width: 980px;
+      margin: 0 auto;
+      padding: 16px 28px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .logo {
+      font-family: var(--mono);
+      font-weight: 700;
+      font-size: 14px;
+      letter-spacing: 0.02em;
+    }
+
+    .logo .blip {
+      color: var(--accent);
+    }
+
+    .nav-links {
+      display: flex;
+      gap: 28px;
+      font-family: var(--mono);
+      font-size: 12.5px;
+      color: var(--text-dim);
+    }
+
+    .nav-links a {
+      transition: color .15s;
+    }
+
+    .nav-links a:hover {
+      color: var(--accent);
+    }
+
+    .nav-links a:focus-visible,
+    a:focus-visible {
+      outline: 1.5px solid var(--accent);
+      outline-offset: 3px;
+    }
+
+    @media (max-width:680px) {
+      .nav-links {
+        display: none;
+      }
+    }
+
+    /* ---- hero / terminal ---- */
+    .hero {
+      padding: 90px 0 70px;
+    }
+
+    .term {
+      background: var(--bg-raised);
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      overflow: hidden;
+      box-shadow: 0 30px 80px -30px rgba(0, 0, 0, 0.7);
+    }
+
+    .term-bar {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      padding: 11px 16px;
+      border-bottom: 1px solid var(--line);
+      background: #0c121a;
+    }
+
+    .dot {
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+      background: #2a3744;
+    }
+
+    .term-title {
+      margin-left: 8px;
+      font-family: var(--mono);
+      font-size: 11.5px;
+      color: var(--text-faint);
+    }
+
+    .term-body {
+      padding: 28px 26px 32px;
+      font-family: var(--mono);
+      font-size: 14px;
+    }
+
+    .term-line {
+      color: var(--text-dim);
+      margin-bottom: 6px;
+    }
+
+    .term-line .prompt {
+      color: var(--accent);
+      margin-right: 8px;
+    }
+
+    .typed {
+      color: var(--text);
+      border-right: 2px solid var(--accent);
+      white-space: nowrap;
+      overflow: hidden;
+      display: inline-block;
+      width: 0;
+      animation: type 1.6s steps(28, end) forwards, blink .8s step-end infinite;
+    }
+
+    @keyframes type {
+      to {
+        width: 28ch;
+      }
+    }
+
+    @keyframes blink {
+      50% {
+        border-color: transparent;
+      }
+    }
+
+    .hero-name {
+      font-family: var(--mono);
+      font-weight: 800;
+      font-size: clamp(34px, 6vw, 58px);
+      letter-spacing: -0.01em;
+      margin: 26px 0 8px;
+      opacity: 0;
+      animation: rise .6s ease forwards .9s;
+    }
+
+    .hero-name .cursor-blip {
+      color: var(--accent);
+    }
+
+    .hero-role {
+      font-family: var(--mono);
+      font-size: 14px;
+      color: var(--accent);
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      margin-bottom: 18px;
+      opacity: 0;
+      animation: rise .6s ease forwards 1.05s;
+    }
+
+    .hero-statement {
+      max-width: 560px;
+      color: var(--text-dim);
+      font-size: 16.5px;
+      opacity: 0;
+      animation: rise .6s ease forwards 1.2s;
+    }
+
+    @keyframes rise {
+      from {
+        opacity: 0;
+        transform: translateY(10px);
+      }
+
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    .hero-cta {
+      display: flex;
+      gap: 14px;
+      margin-top: 30px;
+      flex-wrap: wrap;
+      opacity: 0;
+      animation: rise .6s ease forwards 1.35s;
+    }
+
+    .btn {
+      font-family: var(--mono);
+      font-size: 13px;
+      padding: 11px 20px;
+      border-radius: 5px;
+      border: 1px solid var(--line);
+      transition: border-color .15s, transform .15s, background .15s;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .btn-primary {
+      background: var(--accent);
+      color: #06160e;
+      border-color: var(--accent);
+      font-weight: 700;
+    }
+
+    .btn-primary:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 8px 20px -8px var(--accent-dim);
+    }
+
+    .btn-ghost {
+      color: var(--text);
+    }
+
+    .btn-ghost:hover {
+      border-color: var(--accent);
+      color: var(--accent);
+    }
+
+    .btn:focus-visible {
+      outline: 1.5px solid var(--accent);
+      outline-offset: 3px;
+    }
+
+    /* ---- section shell ---- */
+    section {
+      padding: 74px 0;
+      border-bottom: 1px solid var(--line);
+    }
+
+    .sec-head {
+      display: flex;
+      align-items: baseline;
+      gap: 14px;
+      margin-bottom: 40px;
+    }
+
+    .sec-tag {
+      font-family: var(--mono);
+      font-size: 12px;
+      color: var(--text-faint);
+    }
+
+    .sec-title {
+      font-family: var(--mono);
+      font-weight: 700;
+      font-size: 22px;
+    }
+
+    .status-dot {
+      width: 7px;
+      height: 7px;
+      border-radius: 50%;
+      background: var(--accent);
+      display: inline-block;
+      box-shadow: 0 0 8px var(--accent);
+      margin-right: 8px;
+      vertical-align: middle;
+    }
+
+    /* ---- about ---- */
+    .about-grid {
+      display: grid;
+      grid-template-columns: 200px 1fr;
+      gap: 44px;
+      align-items: start;
+    }
+
+    @media (max-width:680px) {
+      .about-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    .photo-frame {
+      width: 200px;
+      height: 200px;
+      border-radius: 8px;
+      border: 1px solid var(--line);
+      overflow: hidden;
+      position: relative;
+      background: linear-gradient(160deg, #122019, #0c1117);
+    }
+
+    .photo-frame img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+    }
+
+    .photo-frame .corner {
+      position: absolute;
+      width: 14px;
+      height: 14px;
+      border: 2px solid var(--accent);
+      opacity: 0.8;
+    }
+
+    .photo-frame .tl {
+      top: 8px;
+      left: 8px;
+      border-right: none;
+      border-bottom: none;
+    }
+
+    .photo-frame .br {
+      bottom: 8px;
+      right: 8px;
+      border-left: none;
+      border-top: none;
+    }
+
+    .about-text p {
+      color: var(--text-dim);
+      margin-bottom: 14px;
+      max-width: 640px;
+    }
+
+    .about-text p strong {
+      color: var(--text);
+      font-weight: 600;
+    }
+
+    .tags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-top: 18px;
+    }
+
+    .tag {
+      font-family: var(--mono);
+      font-size: 11.5px;
+      color: var(--accent);
+      border: 1px solid var(--accent-dim);
+      padding: 5px 10px;
+      border-radius: 4px;
+      background: rgba(57, 255, 157, 0.05);
+    }
+
+    /* ---- education ---- */
+    .edu-item {
+      display: grid;
+      grid-template-columns: 120px 1fr;
+      gap: 24px;
+      padding: 22px 0;
+      border-top: 1px solid var(--line);
+    }
+
+    .edu-item:first-of-type {
+      border-top: none;
+    }
+
+    @media (max-width:600px) {
+      .edu-item {
+        grid-template-columns: 1fr;
+        gap: 6px;
+      }
+    }
+
+    .edu-year {
+      font-family: var(--mono);
+      font-size: 12.5px;
+      color: var(--text-faint);
+    }
+
+    .edu-school {
+      font-weight: 600;
+      font-size: 16px;
+      margin-bottom: 4px;
+    }
+
+    .edu-detail {
+      color: var(--text-dim);
+      font-size: 14.5px;
+    }
+
+    /* ---- projects ---- */
+    .proj-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 18px;
+    }
+
+    @media (max-width:680px) {
+      .proj-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    .proj-card {
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      padding: 24px;
+      background: var(--bg-raised);
+      transition: border-color .2s, transform .2s;
+      display: flex;
+      flex-direction: column;
+      height: 100%;
+    }
+
+    .proj-card:hover {
+      border-color: var(--accent-dim);
+      transform: translateY(-3px);
+    }
+
+    .proj-id {
+      font-family: var(--mono);
+      font-size: 11px;
+      color: var(--text-faint);
+      margin-bottom: 10px;
+    }
+
+    .proj-name {
+      font-weight: 700;
+      font-size: 17px;
+      margin-bottom: 8px;
+    }
+
+    .proj-desc {
+      color: var(--text-dim);
+      font-size: 14px;
+      flex-grow: 1;
+      margin-bottom: 16px;
+    }
+
+    .proj-stack {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+      margin-bottom: 16px;
+    }
+
+    .chip {
+      font-family: var(--mono);
+      font-size: 10.5px;
+      color: var(--text-dim);
+      border: 1px solid var(--line);
+      padding: 3px 8px;
+      border-radius: 4px;
+    }
+
+    .proj-link {
+      font-family: var(--mono);
+      font-size: 12.5px;
+      color: var(--accent);
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .proj-link:hover {
+      text-decoration: underline;
+    }
+
+    /* ---- achievements ---- */
+    .ach-list {
+      display: flex;
+      flex-direction: column;
+    }
+
+    .ach-row {
+      display: grid;
+      grid-template-columns: 28px 1fr auto;
+      gap: 16px;
+      align-items: center;
+      padding: 16px 0;
+      border-top: 1px solid var(--line);
+    }
+
+    .ach-row:first-child {
+      border-top: none;
+    }
+
+    .ach-icon {
+      color: var(--alert);
+      font-family: var(--mono);
+      font-size: 13px;
+    }
+
+    .ach-name {
+      font-size: 15px;
+    }
+
+    .ach-name span {
+      display: block;
+      color: var(--text-faint);
+      font-size: 12.5px;
+      font-family: var(--mono);
+      margin-top: 2px;
+    }
+
+    .ach-tag {
+      font-family: var(--mono);
+      font-size: 11px;
+      color: var(--text-faint);
+      white-space: nowrap;
+    }
+
+    /* ---- bonus / cv / chatbot ---- */
+    .bonus-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 18px;
+    }
+
+    @media (max-width:680px) {
+      .bonus-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    .bonus-card {
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      padding: 26px;
+      background: var(--bg-raised);
+    }
+
+    .bonus-card h3 {
+      font-family: var(--mono);
+      font-size: 15px;
+      margin-bottom: 10px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .bonus-card p {
+      color: var(--text-dim);
+      font-size: 14px;
+      margin-bottom: 16px;
+    }
+
+    /* chatbot widget */
+    .chat-box {
+      border: 1px solid var(--line);
+      border-radius: 6px;
+      overflow: hidden;
+      background: #0c121a;
+    }
+
+    .chat-log {
+      height: 170px;
+      overflow-y: auto;
+      padding: 14px;
+      font-family: var(--mono);
+      font-size: 12.5px;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .msg {
+      max-width: 85%;
+      padding: 8px 11px;
+      border-radius: 5px;
+      line-height: 1.45;
+    }
+
+    .msg.bot {
+      background: #121b26;
+      color: var(--text-dim);
+      align-self: flex-start;
+    }
+
+    .msg.user {
+      background: rgba(57, 255, 157, 0.1);
+      color: var(--text);
+      align-self: flex-end;
+      border: 1px solid var(--accent-dim);
+    }
+
+    .chat-input-row {
+      display: flex;
+      border-top: 1px solid var(--line);
+    }
+
+    .chat-input-row input {
+      flex: 1;
+      background: transparent;
+      border: none;
+      color: var(--text);
+      font-family: var(--mono);
+      font-size: 12.5px;
+      padding: 11px 12px;
+      outline: none;
+    }
+
+    .chat-input-row button {
+      background: var(--accent);
+      color: #06160e;
+      border: none;
+      font-family: var(--mono);
+      font-weight: 700;
+      font-size: 12px;
+      padding: 0 16px;
+      cursor: pointer;
+    }
+
+    .chat-hint {
+      font-family: var(--mono);
+      font-size: 10.5px;
+      color: var(--text-faint);
+      padding: 8px 12px;
+      border-top: 1px solid var(--line);
+    }
+
+    /* ---- contact ---- */
+    .contact-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 16px;
+    }
+
+    @media (max-width:680px) {
+      .contact-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    .contact-card {
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      padding: 22px;
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+      transition: border-color .2s, transform .2s;
+    }
+
+    .contact-card:hover {
+      border-color: var(--accent);
+      transform: translateY(-3px);
+    }
+
+    .contact-label {
+      font-family: var(--mono);
+      font-size: 11px;
+      color: var(--text-faint);
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+
+    .contact-value {
+      font-size: 15px;
+      font-weight: 600;
+    }
+
+    footer {
+      padding: 36px 0;
+      text-align: center;
+    }
+
+    footer p {
+      font-family: var(--mono);
+      font-size: 11.5px;
+      color: var(--text-faint);
+    }
+  </style>
+</head>
+
+<body>
+
+  <header class="nav">
+    <div class="nav-inner">
+      <div class="logo">osanda<span class="blip">@</span>vinod<span class="blip">:~$</span></div>
+      <nav class="nav-links">
+        <a href="#about">about</a>
+        <a href="#education">education</a>
+        <a href="#projects">projects</a>
+        <a href="#achievements">achievements</a>
+        <a href="#bonus">extras</a>
+        <a href="#contact">contact</a>
+      </nav>
+    </div>
+  </header>
+
+  <main class="wrap">
+
+    <!-- HERO -->
+    <section class="hero" style="border-bottom:none; padding-bottom:20px;">
+      <div class="term">
+        <div class="term-bar">
+          <span class="dot"></span><span class="dot"></span><span class="dot"></span>
+          <span class="term-title">whoami.sh — running</span>
+        </div>
+        <div class="term-body">
+          <div class="term-line"><span class="prompt">$</span>./scan_identity --target=self</div>
+          <div class="term-line"><span class="prompt">›</span><span class="typed">access granted: undergraduate</span>
+          </div>
+        </div>
+      </div>
+
+      <h1 class="hero-name">Osanda Vinod<span class="cursor-blip">_</span></h1>
+      <p class="hero-role">// Cybersecurity Undergraduate</p>
+      <p class="hero-statement">I study how systems break so I can help build ones that don't. Currently focused on
+        network defence, vulnerability analysis, and writing code that holds up under pressure — on disk and under
+        attack.</p>
+      <div class="hero-cta">
+        <a href="#contact" class="btn btn-primary">Get in touch</a>
+        <a href="#" id="cvBtn" class="btn btn-ghost">Download CV ↓</a>
+      </div>
+    </section>
+
+    <!-- ABOUT -->
+    <section id="about">
+      <div class="sec-head"><span class="sec-tag">[ 01 ]</span>
+        <h2 class="sec-title">who_i_am</h2>
+      </div>
+      <div class="about-grid">
+        <div class="photo-frame">
+          <img src="OP Image.jpeg" alt="Portrait placeholder — replace with your professional photo">
+          <span class="corner tl"></span><span class="corner br"></span>
+        </div>
+        <div class="about-text">
+          <p><strong>Hi, I'm Osanda</strong> — an undergraduate studying Cybersecurity, drawn to the discipline
+            somewhere between offense and defence: understanding how attackers think in order to design systems that
+            resist them.</p>
+          <p>My day-to-day sits across network security, secure software development, and digital forensics. I like
+            problems with a clear adversary — a misconfigured firewall, a vulnerable endpoint, an exploit that shouldn't
+            exist — and the satisfaction of closing the gap.</p>
+          <p>Outside coursework, I build small security tools, contribute to CTF write-ups, and keep a lab environment
+            running for testing things I'm not supposed to test on production.</p>
+          <div class="tags">
+            <span class="tag">Network Security</span>
+            <span class="tag">Python</span>
+            <span class="tag">Linux</span>
+            <span class="tag">Penetration Testing</span>
+            <span class="tag">Digital Forensics</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- EDUCATION -->
+    <section id="education">
+      <div class="sec-head"><span class="sec-tag">[ 02 ]</span>
+        <h2 class="sec-title">education_log</h2>
+      </div>
+
+      <div class="edu-item">
+        <div class="edu-year">2025 — present</div>
+        <div>
+          <div class="edu-school">BSc (Hons) in Cybersecurity</div>
+          <div class="edu-detail">Sri Lanka Technological Campus</div>
+        </div>
+      </div>
+
+      <div class="edu-item">
+        <div class="edu-year">2021 — 2023</div>
+        <div>
+          <div class="edu-school">G.C.E. Advanced Level — TECH Stream</div>
+          <div class="edu-detail">Siri Piyarathana National College· Sri Lanka <br>ET, SFT and ICT </div>
+        </div>
+      </div>
+
+    </section>
+
+    <!-- PROJECTS -->
+    <section id="projects">
+      <div class="sec-head"><span class="sec-tag">[ 03 ]</span>
+        <h2 class="sec-title">Expected to be built</h2>
+      </div>
+      <div class="proj-grid">
+
+        <div class="proj-card">
+          <div class="proj-id">PROJ_01 — Active</div>
+          <div class="proj-name">Network Intrusion Detection Tool</div>
+          <div class="proj-desc">A lightweight IDS that monitors live traffic for suspicious patterns and flags
+            anomalies in real time, built to learn the internals of packet inspection.</div>
+          <div class="proj-stack"><span class="chip">Python</span><span class="chip">Scapy</span><span
+              class="chip">Linux</span></div>
+          <a href="#" class="proj-link">View repository →</a>
+        </div>
+
+        <div class="proj-card">
+          <div class="proj-id">PROJ_02 — Complete</div>
+          <div class="proj-name">Vulnerability Scanner for Web Apps</div>
+          <div class="proj-desc">A command-line scanner that checks common web applications for misconfigurations,
+            outdated dependencies, and known OWASP Top 10 issues.</div>
+          <div class="proj-stack"><span class="chip">Python</span><span class="chip">Requests</span><span
+              class="chip">OWASP</span></div>
+          <a href="#" class="proj-link">View repository →</a>
+        </div>
+
+        <div class="proj-card">
+          <div class="proj-id">PROJ_03 — Complete</div>
+          <div class="proj-name">Secure File Encryption Utility</div>
+          <div class="proj-desc">A desktop utility for encrypting and decrypting sensitive files using AES-256, built to
+            understand applied cryptography beyond the textbook.</div>
+          <div class="proj-stack"><span class="chip">Python</span><span class="chip">Cryptography</span><span
+              class="chip">Tkinter</span></div>
+          <a href="#" class="proj-link">View repository →</a>
+        </div>
+
+        <div class="proj-card">
+          <div class="proj-id">PROJ_04 — Active</div>
+          <div class="proj-name">Personal Portfolio &amp; Security Lab</div>
+          <div class="proj-desc">This site — designed and built from scratch, hardened, and deployed as a continuous
+            practice ground for front-end and security fundamentals.</div>
+          <div class="proj-stack"><span class="chip">HTML/CSS</span><span class="chip">JavaScript</span></div>
+          <a href="#" class="proj-link">View repository →</a>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- ACHIEVEMENTS -->
+    <section id="achievements">
+      <div class="sec-head"><span class="sec-tag">[ 04 ]</span>
+        <h2 class="sec-title">achievements</h2>
+      </div>
+      <div class="ach-list">
+        <div class="ach-row">
+          <span class="ach-icon">★</span>
+          <div class="ach-name">Dean's List — Faculty of Computing<span>Academic Year 2026</span></div>
+          <span class="ach-tag">ACADEMIC</span>
+        </div>
+
+        <div class="ach-row">
+          <span class="ach-icon">★</span>
+          <div class="ach-name">Completed Introduction to Cyber Security — Cisco Networking Academy<span>Certificate of
+              completion</span></div>
+          <span class="ach-tag">CERTIFICATION</span>
+        </div>
+        <div class="ach-row">
+          <span class="ach-icon">★</span>
+          <div class="ach-name">Active member, University Cybersecurity Club<span>Workshop organiser and CTF team
+              member</span></div>
+          <span class="ach-tag">LEADERSHIP</span>
+        </div>
+      </div>
+    </section>
+
+    <!-- BONUS -->
+    <section id="bonus">
+      <div class="sec-head"><span class="sec-tag">[ 05 ]</span>
+        <h2 class="sec-title">extras</h2>
+      </div>
+      <div class="bonus-grid">
+
+        <div class="bonus-card">
+          <h3><span class="status-dot"></span>Downloadable CV</h3>
+          <p>Grab a copy of my résumé — education, projects, and skills in one PDF.</p>
+          <a href="#" id="cvBtn2" class="btn btn-primary">Download CV ↓</a>
+        </div>
+
+        <div class="bonus-card">
+          <h3><span class="status-dot"></span>Ask my assistant</h3>
+          <p>A small rule-based assistant trained on this page. Try asking about my projects, education, or how to reach
+            me.</p>
+          <div class="chat-box">
+            <div class="chat-log" id="chatLog">
+              <div class="msg bot">Hi — I'm Osanda's site assistant. Ask me about his projects, education, or contact
+                details.</div>
+            </div>
+            <div class="chat-input-row">
+              <input type="text" id="chatInput" placeholder="Ask something..." autocomplete="off">
+              <button id="chatSend">Send</button>
+            </div>
+            <div class="chat-hint">Try: "projects" · "education" · "contact" · "skills"</div>
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- CONTACT -->
+    <section id="contact" style="border-bottom:none;">
+      <div class="sec-head"><span class="sec-tag">[ 06 ]</span>
+        <h2 class="sec-title">contact</h2>
+      </div>
+      <div class="contact-grid">
+        <a href="https://github.com/OsandaVinod" target="_blank" rel="noopener" class="contact-card">
+          <span class="contact-label">GitHub</span>
+          <span class="contact-value">github.com</span>
+        </a>
+        <a href="https://www.linkedin.com/in/osanda-vinod-a7746b41a/" target="_blank" rel="noopener"
+          class="contact-card">
+          <span class="contact-label">LinkedIn</span>
+          <span class="contact-value">linkedin.com</span>
+        </a>
+        <a href="mailto:osandavinod8@gmail.com" class="contact-card">
+          <span class="contact-label">Email</span>
+          <span class="contact-value">osandavinod8@gmail</span>
+        </a>
+      </div>
+    </section>
+
+  </main>
+
+  <footer>
+    <p>// built by Osanda Vinod — last deployed 2026 — status: <span style="color:var(--accent);">online</span></p>
+  </footer>
+
+  <script>
+    // Smooth-scroll handled by CSS scroll-behavior.
+
+    // CV download placeholder
+    function handleCV(e) {
+      e.preventDefault();
+      alert('Add your CV file (e.g. osanda-vinod-cv.pdf) to the project folder and link it here to enable this download.');
+    }
+    document.getElementById('cvBtn').addEventListener('click', handleCV);
+    document.getElementById('cvBtn2').addEventListener('click', handleCV);
+
+    // Tiny rule-based chatbot
+    const log = document.getElementById('chatLog');
+    const input = document.getElementById('chatInput');
+    const sendBtn = document.getElementById('chatSend');
+
+    const responses = [
+      { keys: ['project', 'build', 'built', 'app'], reply: "I've worked on a network intrusion detection tool, a web vulnerability scanner, a secure file encryption utility, and this portfolio itself — see the Projects section above." },
+      { keys: ['education', 'study', 'degree', 'university'], reply: "I'm currently pursuing a BSc (Hons) in Cybersecurity, after completing A/Levels in the Physical Science stream." },
+      { keys: ['contact', 'email', 'reach', 'linkedin', 'github'], reply: "Best ways to reach me: GitHub (github.com/osandavinod), LinkedIn (linkedin.com/in/osandavinod), or email — all linked in the Contact section." },
+      { keys: ['skill', 'tech', 'stack', 'language'], reply: "Mainly Python, Linux, network security tooling, and applied cryptography — plus front-end basics for projects like this one." },
+      { keys: ['achievement', 'award', 'certificate', 'ctf'], reply: "A few highlights: Dean's List 2024, a top-10 CTF finish, and a Cisco Cybersecurity certification — full list in the Achievements section." },
+      { keys: ['cv', 'resume'], reply: "You can grab my CV using the 'Download CV' button in the Extras section." },
+      { keys: ['hello', 'hi', 'hey'], reply: "Hey! Ask me about projects, education, skills, or how to get in touch." },
+    ];
+
+    function botReply(text) {
+      const lower = text.toLowerCase();
+      const match = responses.find(r => r.keys.some(k => lower.includes(k)));
+      return match ? match.reply : "I'm a simple rule-based assistant, so I might not catch that — try asking about projects, education, skills, achievements, or contact details.";
+    }
+
+    function appendMsg(text, who) {
+      const div = document.createElement('div');
+      div.className = 'msg ' + who;
+      div.textContent = text;
+      log.appendChild(div);
+      log.scrollTop = log.scrollHeight;
+    }
+
+    function send() {
+      const val = input.value.trim();
+      if (!val) return;
+      appendMsg(val, 'user');
+      input.value = '';
+      setTimeout(() => appendMsg(botReply(val), 'bot'), 350);
+    }
+
+    sendBtn.addEventListener('click', send);
+    input.addEventListener('keydown', e => { if (e.key === 'Enter') send(); });
+  </script>
+
+</body>
+
+</html>
